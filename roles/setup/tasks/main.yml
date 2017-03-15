@@ -1,0 +1,58 @@
+---
+  
+- name: Install epel-release
+  yum:
+    name: epel-release
+    state: present
+
+- name: Install git
+  yum:
+    name: git
+    state: present
+
+- name: Install Erlang
+  yum:
+    name: http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_19.2.3~centos~7_amd64.rpm
+    state: present
+
+- name: Get Elixir
+  git: 
+    repo: git://github.com/elixir-lang/elixir.git
+    dest: /tmp/elixir
+    version: v1.4.2
+    accept_hostkey: true
+  register: elixir
+  
+- name: Install Elixir 
+  shell: 
+    make clean install chdir=/tmp/elixir
+  when: elixir.changed
+
+- name: Symlink Elixir files
+  file:
+    src: '/usr/local/bin/{{ item.src }}'
+    dest: '/usr/bin/{{ item.src }}'
+    state: link
+  with_items:
+    - { src: 'mix' }
+    - { src: 'iex' }
+    - { src: 'elixir' }
+    - { src: 'elixirc' }
+  when: elixir.changed
+
+- name: Install nodejs 6
+  yum:
+    name: nodejs
+    state: present
+
+- name: Install npm
+  yum:
+    name: npm
+    state: present
+
+- name: Install brunch
+  npm:
+    name: brunch
+    global: yes
+    state: present
+

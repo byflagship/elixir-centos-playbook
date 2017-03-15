@@ -1,0 +1,3 @@
+*.pem
+inventory
+ansible.cfg
