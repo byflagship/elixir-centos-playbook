@@ -1,3 +1,4 @@
 *.pem
+*.retry
 inventory
 ansible.cfg
