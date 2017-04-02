@@ -1,5 +1,5 @@
 ---
-  
+
 - name: Install epel-release
   yum:
     name: epel-release
@@ -16,28 +16,29 @@
     state: present
 
 - name: Get Elixir
-  git: 
+  git:
     repo: git://github.com/elixir-lang/elixir.git
     dest: /tmp/elixir
     version: v1.4.2
-    accept_hostkey: true
+    accept_hostkey: yes
+    force: yes
   register: elixir
-  
-- name: Install Elixir 
-  shell: 
+
+- name: Install Elixir
+  shell:
     make clean install chdir=/tmp/elixir
   when: elixir.changed
 
 - name: Symlink Elixir files
   file:
-    src: '/usr/local/bin/{{ item.src }}'
-    dest: '/usr/bin/{{ item.src }}'
+    name: '/usr/local/bin/{{ item.name }}'
+    dest: '/usr/bin/{{ item.name }}'
     state: link
   with_items:
-    - { src: 'mix' }
-    - { src: 'iex' }
-    - { src: 'elixir' }
-    - { src: 'elixirc' }
+    - { name: 'mix' }
+    - { name: 'iex' }
+    - { name: 'elixir' }
+    - { name: 'elixirc' }
   when: elixir.changed
 
 - name: Install nodejs 6
@@ -55,4 +56,3 @@
     name: brunch
     global: yes
     state: present
-

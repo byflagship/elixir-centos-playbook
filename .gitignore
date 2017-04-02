@@ -2,3 +2,5 @@
 *.retry
 inventory
 ansible.cfg
+ssh_keys/id_rsa
+ssh_keys/id_rsa.pub

@@ -1,0 +1,12 @@
+---
+
+- name: Add private Github ssh keys
+  copy:
+    src: 'ssh_keys/{{ item.name }}'
+    dest: '/home/centos/.ssh/{{item.name}}'
+    owner: centos
+    group: centos
+    mode: '{{ item.mode }}'
+  with_items:
+    - { name: 'id_rsa', mode: '0600' }
+    - { name: 'id_rsa.pub', mode: '0644' }
