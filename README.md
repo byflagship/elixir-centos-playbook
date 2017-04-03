@@ -43,4 +43,4 @@ Once they are in place, run:
 Please contribute by making a pull request to this repository. We will be continually monitoring and responsive. If you feel that our response has been lacking, please message us here: `build-at-exeq.io`.
 
 ## Credits
-[Shlomi Zadok] (https://github.com/shlomizadok/)
+[Shlomi Zadok](https://github.com/shlomizadok/)
