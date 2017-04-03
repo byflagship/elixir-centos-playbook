@@ -1,0 +1,4 @@
+---
+github_repo: git@github.com:phoenixframework/phoenix.git
+app_name: phoenix
+phoenix_path: /home/centos/phoenix

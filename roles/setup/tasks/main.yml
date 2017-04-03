@@ -10,6 +10,11 @@
     name: git
     state: present
 
+- name: Install gcc and dependencies
+  yum:
+    name: gcc-c++
+    state: present
+
 - name: Install Erlang
   yum:
     name: http://packages.erlang-solutions.com/site/esl/esl-erlang/FLAVOUR_1_general/esl-erlang_19.2.3~centos~7_amd64.rpm

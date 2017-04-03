@@ -4,3 +4,5 @@ inventory
 ansible.cfg
 ssh_keys/id_rsa
 ssh_keys/id_rsa.pub
+config/prod.secret.exs
+group_vars/all.yml

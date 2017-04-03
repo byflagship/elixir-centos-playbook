@@ -1,0 +1,6 @@
+---
+- hosts: servers
+  remote_user: centos
+
+  roles:
+    - deploy

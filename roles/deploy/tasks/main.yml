@@ -1,0 +1,67 @@
+---
+
+- name: Clone latest master from Github
+  git:
+    name: "{{ github_repo }}"
+    dest: "{{ phoenix_path }}"
+    version: master
+    accept_hostkey: yes
+    force: yes
+
+- name: Copy prod.secret
+  copy:
+    src: config/prod.secret.exs
+    dest: "{{ phoenix_path }}/config/prod.secret.exs"
+
+- name: Install Hex and Rebar
+  command: "mix {{ item.name }} --force"
+  args:
+    creates: "~/.mix/{{ item.file }}"
+  with_items:
+    - { name: "local.hex",   file: "archives/hex.ez" }
+    - { name: "local.rebar", file: "rebar" }
+
+- name: Get mix dependencies
+  command: mix deps.get
+  environment:
+    MIX_ENV: "prod"
+  args:
+    chdir: "{{ phoenix_path }}"
+
+- name: Install npm packages based on package.json.
+  npm:
+    path: "{{ phoenix_path }}"
+
+- name: Compile the mix :)
+  command: mix compile
+  environment:
+    MIX_ENV: "prod"
+  args:
+    chdir: "{{ phoenix_path }}"
+
+- name: migrate ecto
+  command: mix ecto.migrate
+  environment:
+    MIX_ENV: "prod"
+  args:
+    chdir: "{{ phoenix_path }}"
+
+- name: build brunch
+  command: brunch build --production
+  args:
+    chdir: "{{ phoenix_path }}"
+
+- name: digest assets
+  command: mix phoenix.digest
+  environment:
+    MIX_ENV: "prod"
+  args:
+    chdir: "{{ phoenix_path }}"
+
+- name: start server
+  command: elixir --detached -S mix do compile, phoenix.server
+  environment:
+    MIX_ENV: "prod"
+    PORT: "4001"
+  args:
+    chdir: "{{ phoenix_path }}"
